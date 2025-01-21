@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+</head>
+<body>
+    <h1>Index</h1>
+    <button onclick="window.location.href='{% url 'room_list' %}'">Room List</button>
+    <button onclick="window.location.href='{% url 'room_detail' pk=1 %}'">Room Detail</button>
+    <button onclick="window.location.href='{% url 'create_booking' pk=1 %}'">Create Booking</button>
+    <button onclick="window.location.href='{% url 'create_rental' pk=1 %}'">Create Rental</button>
+</body>
+</html>
