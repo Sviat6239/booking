@@ -1,10 +1,12 @@
+from datetime import date
+
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Room, Booking, Rental, Company
-from .forms import BookingForm, RentalForm, CompanyForm, CustomUserCreationForm, CustomUserCreationForm
+from .forms import BookingForm, RentalForm, CompanyForm, CustomUserCreationForm, CustomUserLoginForm
 
 def index(request):
     return render(request, 'roombooking/index.html')
@@ -47,7 +49,7 @@ def create_rental(request, pk):
         form = RentalForm()
     return render(request, 'roombooking/rental_form.html', {'form': form})
 
-def user_registration(request):
+def registration(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -55,38 +57,40 @@ def user_registration(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
-            login(request, user)
             messages.success(request, f'Welcome {user.username}! You have been successfully registered.')
             return redirect('index')
         else:
             messages.error(request, 'Registration failed. Please check the form for errors.')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'roombooking/user_registration.html', {'form': form})
+    return render(request, 'roombooking/registration.html', {'form': form})
 
-def user_login(request):
+def login(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request, data=request.POST)
+        form = CustomUserLoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+            print("Form is valid")
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
             if user is not None:
-                login(request, user)
-                messages.success(request, 'You are successfully logged in.')
-                return redirect('index')
+                print("User authenticated")
+                auth_login(request, user)
+                messages.success(request, f'Welcome back, {user.username}!')
+                return redirect('dashboard')
             else:
+                print("User authentication failed")
                 messages.error(request, 'Invalid username or password.')
         else:
-            messages.error(request, 'Please fill in both fields correctly.')
+            print("Form is not valid")
+            print(form.errors)
     else:
-        form = CustomUserCreationForm()
-    return render(request, 'roombooking/user_login.html', {'form': form})
+        form = CustomUserLoginForm()
+    return render(request, 'roombooking/login.html', {'form': form})
 
-@login_required
-def user_logout(request):
-    logout(request)
-    messages.success(request, 'You have been logged out.')
+def logout(request):
+    auth_logout(request)
+    messages.success(request, 'You have been successfully logged out.')
     return redirect('index')
 
 @login_required
@@ -105,11 +109,9 @@ def register_company(request):
         form = CompanyForm()
     return render(request, 'roombooking/company_registration.html', {'form': form})
 
-
 @login_required
 def company_rooms(request):
     company = get_object_or_404(Company, owner=request.user)
-
     rooms = company.rooms.all()
 
     room_status = []
@@ -124,7 +126,6 @@ def company_rooms(request):
 
     return render(request, 'roombooking/company_rooms.html', {'room_status': room_status})
 
-
 @login_required
 def user_bookings(request):
     bookings = Booking.objects.filter(user=request.user)
@@ -135,3 +136,8 @@ def company_rentals(request):
     company = get_object_or_404(Company, owner=request.user)
     rentals = Rental.objects.filter(room__company=company)
     return render(request, 'roombooking/company_rentals.html', {'rentals': rentals})
+
+@login_required
+def dashboard(request):
+    user = request.user
+    return render(request, 'roombooking/dashboard.html', {'user': user})

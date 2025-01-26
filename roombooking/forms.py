@@ -112,3 +112,7 @@ class CompanyForm(forms.ModelForm):
             instance.owner = kwargs.get('user')
         instance.save()
         return instance
+
+class CustomUserLoginForm(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
