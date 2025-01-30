@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Rent Room</title>
-</head>
-<body>
+{% extends 'roombooking/base.html' %}
+
+{% block title %}Rent Room{% endblock %}
+
+{% block content %}
     <h1>Rent Room</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Rent</button>
     </form>
-</body>
-</html>
+{% endblock %}

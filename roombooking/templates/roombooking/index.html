@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-</head>
-<body>
+{% extends 'roombooking/base.html' %}
+
+{% block title %}Index{% endblock %}
+
+{% block content %}
     <h1>Index</h1>
     <button onclick="window.location.href='{% url 'room_list' %}'">View All Rooms</button>
     {% if user.is_authenticated %}
@@ -14,5 +11,4 @@
     {% else %}
         <p>Please <a href="{% url 'registration' %}">register</a> or <a href="{% url 'login' %}">login</a> to see more options.</p>
     {% endif %}
-</body>
-</html>
+{% endblock %}

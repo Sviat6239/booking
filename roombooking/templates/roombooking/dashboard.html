@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
-<body>
+{% extends 'roombooking/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
     <h1>Welcome, {{ user.username }}</h1>
     <p>Email: {{ user.email }}</p>
     <p>First Name: {{ user.first_name }}</p>
@@ -15,5 +12,4 @@
     {% else %}
         <button onclick="window.location.href='{% url 'register_company' %}'">Register Company</button>
     {% endif %}
-</body>
-</html>
+{% endblock %}

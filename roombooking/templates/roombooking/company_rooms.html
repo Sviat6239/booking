@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Rooms</title>
-</head>
-<body>
+{% extends 'roombooking/base.html' %}
+
+{% block title %}Company Rooms{% endblock %}
+
+{% block content %}
     <h1>Company Rooms</h1>
     <ul>
         {% for status in room_status %}
             <li>{{ status.room }} - {% if status.is_booked %}Booked{% else %}Available{% endif %}</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

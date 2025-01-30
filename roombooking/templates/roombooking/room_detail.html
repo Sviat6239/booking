@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Room Detail</title>
-</head>
-<body>
+{% extends 'roombooking/base.html' %}
+
+{% block title %}Room Detail{% endblock %}
+
+{% block content %}
     <h1>{{ room.name }}</h1>
     <p>{{ room.description }}</p>
     <p>Total Area: {{ room.total_area }}</p>
@@ -11,5 +10,4 @@
     <p>Area per Room: {{ room.area_per_room }}</p>
     <a href="{% url 'create_booking' room.pk %}">Book this room</a>
     <a href="{% url 'create_rental' room.pk %}">Rent this room</a>
-</body>
-</html>
+{% endblock %}
