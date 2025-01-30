@@ -4,40 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Room Booking{% endblock %}</title>
+    {% load static %}
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 56px;
-            background-color: #f8f9fa;
-        }
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #007bff !important;
-        }
-        .nav-link {
-            font-size: 1.2rem;
-            color: #007bff !important;
-        }
-        .nav-link:hover {
-            color: #ffffff !important;
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            border-radius: 8px;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-    </style>
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
