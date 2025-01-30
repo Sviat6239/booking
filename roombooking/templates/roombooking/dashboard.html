@@ -10,6 +10,10 @@
     <p>Email: {{ user.email }}</p>
     <p>First Name: {{ user.first_name }}</p>
     <p>Last Name: {{ user.last_name }}</p>
-    <button onclick="window.location.href='{% url 'register_company' %}'">Register Company</button>
+    {% if user.company %}
+        <button onclick="window.location.href='{% url 'create_room' %}'">Create Room Listing</button>
+    {% else %}
+        <button onclick="window.location.href='{% url 'register_company' %}'">Register Company</button>
+    {% endif %}
 </body>
 </html>

@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Room, Booking, Rental, Company
-from .forms import BookingForm, RentalForm, CompanyForm, CustomUserCreationForm, CustomUserLoginForm
+from .forms import BookingForm, RentalForm, CompanyForm, CustomUserCreationForm, CustomUserLoginForm, RoomForm
 
 def index(request):
     return render(request, 'roombooking/index.html')
@@ -89,12 +89,16 @@ def logout(request):
 
 @login_required
 def register_company(request):
+    if Company.objects.filter(owner=request.user).exists():
+        messages.error(request, 'You already have a registered company.')
+        return redirect('dashboard')
+
     if request.method == 'POST':
         form = CompanyForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your company has been successfully registered.')
-            return redirect('index')
+            return redirect('dashboard')
         else:
             messages.error(request, 'Company registration failed. Please check the form for errors.')
     else:
@@ -128,6 +132,20 @@ def company_rentals(request):
     company = get_object_or_404(Company, owner=request.user)
     rentals = Rental.objects.filter(room__company=company)
     return render(request, 'roombooking/company_rentals.html', {'rentals': rentals})
+
+@login_required
+def create_room(request):
+    if request.method == 'POST':
+        form = RoomForm(request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Room listing created successfully.')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Failed to create room listing. Please check the form for errors.')
+    else:
+        form = RoomForm(user=request.user)
+    return render(request, 'roombooking/room_form.html', {'form': form})
 
 @login_required
 def dashboard(request):
