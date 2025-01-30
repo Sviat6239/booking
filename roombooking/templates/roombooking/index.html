@@ -7,14 +7,10 @@
 </head>
 <body>
     <h1>Index</h1>
-    <button onclick="window.location.href='{% url 'room_list' %}'">Room List</button>
+    <button onclick="window.location.href='{% url 'room_list' %}'">View All Rooms</button>
     {% if user.is_authenticated %}
-        <button onclick="window.location.href='{% url 'create_booking' pk=1 %}'">Create Booking</button>
-        <button onclick="window.location.href='{% url 'create_rental' pk=1 %}'">Create Rental</button>
-        <button onclick="window.location.href='{% url 'user_bookings' %}'">My Bookings</button>
-        <button onclick="window.location.href='{% url 'company_rentals' %}'">Company Rentals</button>
-        <button onclick="window.location.href='{% url 'company_rooms' %}'">Company Rooms</button>
-        <button onclick="window.location.href='{% url 'dashboard' %}'">Dashboard</button>
+        <button onclick="window.location.href='{% url 'dashboard' %}'">Go to Dashboard</button>
+        <button onclick="window.location.href='{% url 'logout' %}'">Logout</button>
     {% else %}
         <p>Please <a href="{% url 'registration' %}">register</a> or <a href="{% url 'login' %}">login</a> to see more options.</p>
     {% endif %}

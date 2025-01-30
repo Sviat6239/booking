@@ -67,23 +67,17 @@ def registration(request):
 
 def login(request):
     if request.method == 'POST':
-        form = CustomUserLoginForm(request.POST)
+        form = CustomUserLoginForm(request, data=request.POST)
         if form.is_valid():
             print("Form is valid")
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                print("User authenticated")
-                auth_login(request, user)
-                messages.success(request, f'Welcome back, {user.username}!')
-                return redirect('dashboard')
-            else:
-                print("User authentication failed")
-                messages.error(request, 'Invalid username or password.')
+            user = form.get_user()
+            auth_login(request, user)
+            messages.success(request, f'Welcome back, {user.username}!')
+            return redirect('index')
         else:
             print("Form is not valid")
             print(form.errors)
+            messages.error(request, 'Invalid username or password.')
     else:
         form = CustomUserLoginForm()
     return render(request, 'roombooking/login.html', {'form': form})
@@ -96,17 +90,15 @@ def logout(request):
 @login_required
 def register_company(request):
     if request.method == 'POST':
-        form = CompanyForm(request.POST)
+        form = CompanyForm(request.POST, user=request.user)
         if form.is_valid():
-            company = form.save(commit=False)
-            company.owner = request.user
-            company.save()
+            form.save()
             messages.success(request, 'Your company has been successfully registered.')
             return redirect('index')
         else:
             messages.error(request, 'Company registration failed. Please check the form for errors.')
     else:
-        form = CompanyForm()
+        form = CompanyForm(user=request.user)
     return render(request, 'roombooking/company_registration.html', {'form': form})
 
 @login_required
