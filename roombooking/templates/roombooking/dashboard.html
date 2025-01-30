@@ -8,7 +8,23 @@
     <p>First Name: {{ user.first_name }}</p>
     <p>Last Name: {{ user.last_name }}</p>
     {% if user.company %}
+        <h2>Company Information</h2>
+        <p>Name: {{ user.company.name }}</p>
+        <p>Description: {{ user.company.description }}</p>
+        <p>Address: {{ user.company.address }}</p>
+        <p>Contact Email: {{ user.company.contact_email }}</p>
+        <button onclick="window.location.href='{% url 'edit_company' user.company.pk %}'">Edit Company</button>
         <button onclick="window.location.href='{% url 'create_room' %}'">Create Room Listing</button>
+
+        <h2>Rooms for Rent</h2>
+        <ul>
+            {% for room in user.company.rooms.all %}
+                <li>
+                    <a href="{% url 'room_detail' room.pk %}">{{ room.name }}</a> - {{ room.total_area }} sqm - ${{ room.cost_per_day }} per day
+                    <button onclick="window.location.href='{% url 'edit_room' room.pk %}'">Edit Room</button>
+                </li>
+            {% endfor %}
+        </ul>
     {% else %}
         <button onclick="window.location.href='{% url 'register_company' %}'">Register Company</button>
     {% endif %}

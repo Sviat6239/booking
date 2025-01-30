@@ -106,6 +106,21 @@ def register_company(request):
     return render(request, 'roombooking/company_registration.html', {'form': form})
 
 @login_required
+def edit_company(request, pk):
+    company = get_object_or_404(Company, pk=pk, owner=request.user)
+    if request.method == 'POST':
+        form = CompanyForm(request.POST, instance=company)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Company information updated successfully.')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Failed to update company information. Please check the form for errors.')
+    else:
+        form = CompanyForm(instance=company)
+    return render(request, 'roombooking/edit_company.html', {'form': form})
+
+@login_required
 def company_rooms(request):
     company = get_object_or_404(Company, owner=request.user)
     rooms = company.rooms.all()
@@ -121,6 +136,21 @@ def company_rooms(request):
         })
 
     return render(request, 'roombooking/company_rooms.html', {'room_status': room_status})
+
+@login_required
+def edit_room(request, pk):
+    room = get_object_or_404(Room, pk=pk, company__owner=request.user)
+    if request.method == 'POST':
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Room information updated successfully.')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Failed to update room information. Please check the form for errors.')
+    else:
+        form = RoomForm(instance=room)
+    return render(request, 'roombooking/edit_room.html', {'form': form})
 
 @login_required
 def user_bookings(request):

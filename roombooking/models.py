@@ -27,6 +27,7 @@ class Room(models.Model):
     area_per_room = models.IntegerField(help_text="Area per sub-room in square meters")
     description = models.TextField()
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='rooms')
+    number_of_rooms = models.IntegerField(help_text="Number of rooms in the premises", default=1)
 
     def __str__(self):
         return self.name
@@ -38,6 +39,9 @@ class Room(models.Model):
             raise ValidationError("Area per room must be greater than zero.")
         if self.total_area <= 0:
             raise ValidationError("Total area must be greater than zero.")
+        if self.number_of_rooms <= 0:
+            raise ValidationError("Number of rooms must be greater than zero.")
+
 
     def save(self, *args, **kwargs):
         self.clean()

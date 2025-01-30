@@ -20,17 +20,25 @@ from roombooking import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('rooms/', views.room_list, name='room_list'),
-    path('room/<int:pk>/', views.room_detail, name='room_detail'),
-    path('room/<int:pk>/booking/', views.create_booking, name='create_booking'),
-    path('room/<int:pk>/rental/', views.create_rental, name='create_rental'),
     path('register/', views.registration, name='registration'),
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
+
     path('register_company/', views.register_company, name='register_company'),
-    path('user/bookings/', views.user_bookings, name='user_bookings'),
-    path('company/rentals/', views.company_rentals, name='company_rentals'),
-    path('create_room/', views.create_room, name='create_room'),
+    path('edit_company/<int:pk>/', views.edit_company, name='edit_company'),
     path('company/rooms/', views.company_rooms, name='company_rooms'),
+    path('company/rentals/', views.company_rentals, name='company_rentals'),
+
+    path('rooms/', views.room_list, name='room_list'),
+    path('room/<int:pk>/', views.room_detail, name='room_detail'),
+    path('room/<int:pk>/edit/', views.edit_room, name='edit_room'),
+    path('create_room/', views.create_room, name='create_room'),
+
+    path('room/<int:pk>/booking/', views.create_booking, name='create_booking'),
+    path('room/<int:pk>/rental/', views.create_rental, name='create_rental'),
+    path('user/bookings/', views.user_bookings, name='user_bookings'),
+
     path('dashboard/', views.dashboard, name='dashboard'),
+
+    path('admin/', admin.site.urls),
 ]
